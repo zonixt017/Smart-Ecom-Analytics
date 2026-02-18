@@ -2,22 +2,38 @@
 
 > **Capstone Project** — End-to-end data science platform covering EDA, customer segmentation, churn prediction, sales forecasting, and product recommendations using real Kaggle datasets.
 
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-FF4B4B?logo=streamlit&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.13+-FF6F00?logo=tensorflow&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-F7931E?logo=scikit-learn&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 ---
 
-## 📊 Live Dashboard
+## 🚀 Live Demo
 
-```bash
-streamlit run app/streamlit_app.py
-```
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smart-ecom-analytics.streamlit.app)
 
-Open → `http://localhost:8501`
+> **Deploy your own** → see [Deployment](#-deployment) section below
+
+---
+
+## 📊 Dashboard Preview
+
+| EDA Overview | Customer Segmentation | Churn Prediction |
+|---|---|---|
+| Revenue trends, cleaning pipeline, category analysis | RFM + K-Means clusters, PCA scatter | SHAP explainability, ROC curve, live predictor |
+
+| Sales Forecast | Recommendations |
+|---|---|
+| LSTM 30-day forecast, actual vs predicted | TF-IDF content-based + popularity ranking |
 
 ---
 
 ## 🗂️ Project Structure
 
 ```
-tm_capstone/
+Smart-Ecom-Analytics/
 ├── app/                          # Streamlit dashboard
 │   ├── streamlit_app.py          # Home page
 │   ├── utils.py                  # Shared utilities
@@ -36,17 +52,20 @@ tm_capstone/
 │   └── 05_recommendation_system.ipynb
 │
 ├── data/
-│   ├── olist/                    # ⬇️ Download from Kaggle (see below)
-│   ├── churn/                    # ⬇️ Download from Kaggle (see below)
-│   ├── flipkart/                 # ⬇️ Download from Kaggle (see below)
-│   └── preprocess.py             # Run to generate *_clean.csv files
+│   ├── orders_clean.csv          # 96,477 Olist delivered orders
+│   ├── churn_clean.csv           # 3,941 churn records
+│   ├── flipkart_clean.csv        # 189,869 product reviews
+│   ├── olist/                    # ⬇️ Raw Kaggle CSVs (gitignored)
+│   ├── churn/                    # ⬇️ Raw Kaggle CSVs (gitignored)
+│   ├── flipkart/                 # ⬇️ Raw Kaggle CSVs (gitignored)
+│   └── preprocess.py             # Regenerate *_clean.csv files
 │
-├── models/                       # Saved model artifacts
-│   ├── churn_metrics.json
-│   ├── lstm_metrics.json
-│   ├── segment_summary.csv
-│   ├── popularity_scores.csv
-│   └── products_index.csv
+├── models/                       # Model metrics & summaries
+│   ├── churn_metrics.json        # Accuracy, F1, AUC
+│   ├── lstm_metrics.json         # MAE, RMSE, MAPE
+│   ├── segment_summary.csv       # RFM segment profiles
+│   ├── popularity_scores.csv     # Product rankings
+│   └── products_index.csv        # Product metadata
 │
 ├── report/
 │   └── Smart_Ecommerce_Project_Report.pdf
@@ -61,86 +80,83 @@ tm_capstone/
 
 ## 📦 Datasets
 
-> **Large CSV files are not included in this repo.** Download them from Kaggle and place them in the correct folders.
+> **Raw CSV files are gitignored** (too large). The cleaned versions are committed.
 
 | Dataset | Kaggle Link | Place in |
 |---------|-------------|----------|
-| Olist Brazilian E-Commerce | [kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) | `data/olist/` |
-| E-Commerce Customer Churn | [kaggle.com/datasets/ankitverma2010/ecommerce-customer-churn-analysis-and-prediction](https://www.kaggle.com/datasets/ankitverma2010/ecommerce-customer-churn-analysis-and-prediction) | `data/churn/` |
-| Flipkart Product Reviews | [kaggle.com/datasets/niraliivaghani/flipkart-product-customer-reviews-dataset](https://www.kaggle.com/datasets/niraliivaghani/flipkart-product-customer-reviews-dataset) | `data/flipkart/` |
+| Olist Brazilian E-Commerce | [olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) | `data/olist/` |
+| E-Commerce Customer Churn | [ankitverma2010/ecommerce-customer-churn](https://www.kaggle.com/datasets/ankitverma2010/ecommerce-customer-churn-analysis-and-prediction) | `data/churn/` |
+| Flipkart Product Reviews | [niraliivaghani/flipkart-product-customer-reviews-dataset](https://www.kaggle.com/datasets/niraliivaghani/flipkart-product-customer-reviews-dataset) | `data/flipkart/` |
 
 ---
 
-## 🚀 Setup & Run
+## 🚀 Local Setup
 
-### 1. Clone the repo
 ```bash
-git clone https://github.com/<your-username>/tm_capstone.git
-cd tm_capstone
-```
+# 1. Clone
+git clone https://github.com/zonixt017/Smart-Ecom-Analytics.git
+cd Smart-Ecom-Analytics
 
-### 2. Install dependencies
-```bash
+# 2. Install dependencies
 pip install -r requirements.txt
-```
 
-### 3. Download datasets
-Place the Kaggle CSVs in the folders shown above.
-
-### 4. Preprocess data
-```bash
+# 3. (Optional) Re-run preprocessing from raw Kaggle data
 python data/preprocess.py
-```
-This generates `data/orders_clean.csv`, `data/churn_clean.csv`, `data/flipkart_clean.csv`.
 
-### 5. Train & save models
-```bash
+# 4. (Optional) Re-train & save models
 python save_models.py
-```
-Saves 14 model files to `models/`.
 
-### 6. Launch dashboard
-```bash
+# 5. Launch dashboard
 streamlit run app/streamlit_app.py
 ```
 
-### 7. (Optional) Generate PDF report
-```bash
-python generate_report.py
-```
+---
+
+## ☁️ Deployment
+
+### Deploy to Streamlit Cloud (free)
+
+1. Go to **[share.streamlit.io](https://share.streamlit.io)**
+2. Click **"New app"**
+3. Connect your GitHub repo: `zonixt017/Smart-Ecom-Analytics`
+4. Set **Main file path**: `app/streamlit_app.py`
+5. Click **Deploy** — done! 🎉
+
+> ⚠️ **Note on TensorFlow**: Streamlit Cloud has a 1GB memory limit. If the Sales Forecast page causes memory issues, the LSTM page gracefully falls back to a pre-computed forecast. Consider using `tensorflow-cpu` in requirements for cloud deployment.
 
 ---
 
 ## 🧠 Modules
 
 ### 📊 Week 1 — EDA Overview
-- Loaded & merged 9 Olist CSV files
-- 10-step cleaning pipeline (filter, translate, aggregate, fill nulls)
+- Loaded & merged **9 Olist CSV files** (100k+ orders)
+- **10-step cleaning pipeline**: merge → translate → aggregate → filter → fill nulls
 - Revenue trends, category analysis, geographic breakdown, payment & review analysis
 
 ### 👥 Week 2 — Customer Segmentation
-- RFM (Recency, Frequency, Monetary) computed per customer
+- **RFM** (Recency, Frequency, Monetary) computed per customer
 - Log-transform + StandardScaler preprocessing
-- K-Means clustering (k=4 via Elbow + Silhouette)
-- Segments: **Champions**, **Loyal**, **At Risk**, **Lost**
+- **K-Means clustering** (k=4 via Elbow + Silhouette Score)
+- Segments: **Champions** 🏆 | **Loyal** 💙 | **At Risk** ⚠️ | **Lost** ❌
 
-### ⚠️ Week 3 — Churn Prediction
+### ⚠️ Week 3 — Churn Prediction + SHAP
 - Dataset: 3,941 customers with behavioral features
-- Model: Random Forest (200 trees, max_depth=10)
+- Model: **Random Forest** (200 trees, max_depth=10)
 - **Accuracy: 92.9% | F1: 0.77 | ROC-AUC: 0.958**
-- Top predictors: Tenure, Cashback Amount, Days Since Last Order
+- **SHAP explainability**: global feature impact, per-customer waterfall, heatmap
+- Interactive live predictor with sliders
 
 ### 📈 Week 4 — Sales Forecasting (LSTM)
 - Daily revenue time series from Olist orders
-- LSTM architecture: 64 → 32 units, 30-day look-back window
+- **LSTM**: 64 → 32 units, 30-day look-back, EarlyStopping
 - **MAE: R$2,396 | RMSE: R$2,876 | MAPE: 7.7%**
-- 30-day future forecast with autoregressive prediction
+- 30-day autoregressive future forecast
 
 ### 🎯 Week 5 — Recommendation System
 - Dataset: 189,869 Flipkart product reviews
 - **Popularity-based**: weighted score (60% volume + 40% rating)
 - **Content-based**: TF-IDF (3,000 features) + Cosine Similarity
-- Category-level filtering supported
+- Category-level filtering + similarity heatmap
 
 ---
 
@@ -148,11 +164,11 @@ python generate_report.py
 
 | Model | Metric | Value |
 |-------|--------|-------|
-| K-Means Segmentation | Silhouette Score | Optimal at k=4 |
+| K-Means Segmentation | Optimal k | **4** (Elbow + Silhouette) |
 | Random Forest (Churn) | ROC-AUC | **0.958** |
 | Random Forest (Churn) | Accuracy | **92.9%** |
 | LSTM (Sales Forecast) | MAPE | **7.7%** |
-| LSTM (Sales Forecast) | MAE | R$2,396 |
+| LSTM (Sales Forecast) | MAE | **R$2,396** |
 
 ---
 
@@ -162,26 +178,29 @@ python generate_report.py
 |----------|-------|
 | Data Processing | `pandas`, `numpy` |
 | Visualization | `matplotlib`, `seaborn`, `plotly` |
-| Machine Learning | `scikit-learn` |
-| Deep Learning | `TensorFlow` / `Keras` |
+| Machine Learning | `scikit-learn` (KMeans, RandomForest, TF-IDF) |
+| Deep Learning | `TensorFlow` / `Keras` (LSTM) |
+| Explainability | `shap` (TreeExplainer) |
 | Dashboard | `Streamlit` |
 | Report | `ReportLab` |
+| Data Sources | Olist (Kaggle), Flipkart Reviews (Kaggle) |
 
 ---
 
 ## 📄 Report
 
-The full project report is available at:
-```
-report/Smart_Ecommerce_Project_Report.pdf
-```
+Full project report: [`report/Smart_Ecommerce_Project_Report.pdf`](report/Smart_Ecommerce_Project_Report.pdf)
 
 ---
 
 ## 📋 Requirements
 
-See [`requirements.txt`](requirements.txt) for the full list of dependencies.
-
 ```bash
 pip install -r requirements.txt
 ```
+
+---
+
+## 📝 License
+
+MIT License — feel free to use, modify, and share.

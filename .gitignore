@@ -30,18 +30,20 @@ data/customers.csv
 data/transactions.csv
 data/products.csv
 
-# ── Cleaned data (regenerate via data/preprocess.py) ─────────────────────────
-data/orders_clean.csv
-data/churn_clean.csv
-data/flipkart_clean.csv
+# ── Cleaned data — KEEP for Streamlit Cloud deployment ───────────────────────
+# (orders_clean ~15MB, churn_clean ~300KB, flipkart_clean ~50MB)
+# Uncomment below to exclude if repo size is a concern:
+# data/orders_clean.csv
+# data/churn_clean.csv
+# data/flipkart_clean.csv
 
-# ── Trained models (regenerate via save_models.py) ───────────────────────────
+# ── Trained models — large binary files ──────────────────────────────────────
 models/*.pkl
 models/*.npz
 models/*.keras
 models/*.h5
 
-# ── Keep model metrics & summaries (small JSON/CSV) ──────────────────────────
+# ── Keep model metrics & summaries (small JSON/CSV — always commit) ───────────
 !models/churn_metrics.json
 !models/lstm_metrics.json
 !models/segment_summary.csv

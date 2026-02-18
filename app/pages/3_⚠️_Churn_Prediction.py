@@ -208,6 +208,92 @@ res2.metric("Prediction", pred)
 
 st.markdown("---")
 
+# ── SHAP Explainability ───────────────────────────────────────────────────────
+st.subheader("🧠 SHAP — Model Explainability")
+st.markdown("""
+**SHAP (SHapley Additive exPlanations)** shows *why* the model makes each prediction.
+- **Red bars** → feature pushes prediction toward churn
+- **Blue bars** → feature pushes prediction away from churn
+""")
+
+@st.cache_data
+def compute_shap(_model, _X):
+    import shap
+    explainer = shap.TreeExplainer(_model)
+    shap_values = explainer.shap_values(_X)
+    # For binary classification, shap_values is a list [class0, class1]
+    if isinstance(shap_values, list):
+        return shap_values[1], explainer.expected_value[1]
+    return shap_values, explainer.expected_value
+
+X_full = df[FEAT_COLS]
+shap_vals, base_val = compute_shap(rf, X_full)
+
+shap_tab1, shap_tab2, shap_tab3 = st.tabs(["📊 Global Feature Impact", "🔍 Single Prediction", "🌡️ SHAP Heatmap"])
+
+with shap_tab1:
+    st.markdown("**Mean |SHAP| value per feature** — higher = more influential globally")
+    mean_shap = pd.Series(
+        np.abs(shap_vals).mean(axis=0),
+        index=FEAT_COLS
+    ).sort_values(ascending=False)
+
+    fig, ax = plt.subplots(figsize=(10, 4))
+    colors_shap = ['#e74c3c' if v > mean_shap.median() else '#3498db' for v in mean_shap.values]
+    ax.barh(mean_shap.index[::-1], mean_shap.values[::-1], color=colors_shap[::-1])
+    ax.set_title('Mean |SHAP| Value — Global Feature Importance')
+    ax.set_xlabel('Mean |SHAP| Value')
+    plt.tight_layout()
+    st.pyplot(fig); plt.close()
+
+with shap_tab2:
+    st.markdown("**SHAP waterfall for a single customer** — see exactly what drives their churn risk")
+    cust_idx = st.slider("Select customer index", 0, len(df)-1, 0)
+    row_shap = shap_vals[cust_idx]
+    row_feat = X_full.iloc[cust_idx]
+    churn_prob_cust = rf.predict_proba(row_feat.values.reshape(1, -1))[0][1]
+
+    st.metric("Churn Probability", f"{churn_prob_cust:.1%}",
+              delta="High Risk" if churn_prob_cust > 0.5 else "Low Risk")
+
+    # Waterfall chart
+    shap_df = pd.DataFrame({
+        'Feature': FEAT_COLS,
+        'Value': row_feat.values,
+        'SHAP': row_shap
+    }).sort_values('SHAP', key=abs, ascending=False).head(8)
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    colors_w = ['#e74c3c' if v > 0 else '#2ecc71' for v in shap_df['SHAP']]
+    bars = ax.barh(
+        [f"{r['Feature']}={r['Value']:.1f}" for _, r in shap_df.iterrows()],
+        shap_df['SHAP'], color=colors_w
+    )
+    ax.axvline(0, color='black', linewidth=0.8)
+    ax.set_title(f'SHAP Waterfall — Customer #{cust_idx} (Churn Prob: {churn_prob_cust:.1%})')
+    ax.set_xlabel('SHAP Value (impact on churn probability)')
+    plt.tight_layout()
+    st.pyplot(fig); plt.close()
+
+with shap_tab3:
+    st.markdown("**SHAP values for top 200 customers** — patterns across the dataset")
+    sample_n = min(200, len(shap_vals))
+    shap_sample = shap_vals[:sample_n]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    im = ax.imshow(shap_sample.T, aspect='auto', cmap='RdBu_r',
+                   vmin=-np.percentile(np.abs(shap_sample), 95),
+                   vmax= np.percentile(np.abs(shap_sample), 95))
+    ax.set_yticks(range(len(FEAT_COLS)))
+    ax.set_yticklabels(FEAT_COLS, fontsize=9)
+    ax.set_xlabel('Customer Index')
+    ax.set_title(f'SHAP Value Heatmap (first {sample_n} customers)')
+    plt.colorbar(im, ax=ax, label='SHAP Value')
+    plt.tight_layout()
+    st.pyplot(fig); plt.close()
+
+st.markdown("---")
+
 # ── High-risk customers ───────────────────────────────────────────────────────
 st.subheader("🚨 Top 20 High-Risk Customers")
 high_risk = (df[['Tenure', 'SatisfactionScore', 'Complain',
