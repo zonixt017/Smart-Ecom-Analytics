@@ -1,0 +1,80 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+env/
+.env
+.venv/
+ENV/
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Data files (large CSVs — download from Kaggle) ───────────────────────────
+data/olist/
+data/churn/
+data/flipkart/
+data/customers.csv
+data/transactions.csv
+data/products.csv
+
+# ── Cleaned data (regenerate via data/preprocess.py) ─────────────────────────
+data/orders_clean.csv
+data/churn_clean.csv
+data/flipkart_clean.csv
+
+# ── Trained models (regenerate via save_models.py) ───────────────────────────
+models/*.pkl
+models/*.npz
+models/*.keras
+models/*.h5
+
+# ── Keep model metrics & summaries (small JSON/CSV) ──────────────────────────
+!models/churn_metrics.json
+!models/lstm_metrics.json
+!models/segment_summary.csv
+!models/popularity_scores.csv
+!models/products_index.csv
+
+# ── Report charts (regenerate by running notebooks) ──────────────────────────
+report/*.png
+report/*.jpg
+
+# ── Keep the PDF report ───────────────────────────────────────────────────────
+!report/Smart_Ecommerce_Project_Report.pdf
+
+# ── Dev/utility scripts (not needed for the project itself) ──────────────────
+check_packages.py
+check_syntax.py
+fix_bom.py
+fix_width.py
+inspect_data.py
+inspect_flipkart.py
+data/generate_data.py
+
+# ── OS & IDE ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Streamlit cache ───────────────────────────────────────────────────────────
+.streamlit/
+
+# ── TensorFlow / Keras logs ───────────────────────────────────────────────────
+logs/
+*.tfevents.*
