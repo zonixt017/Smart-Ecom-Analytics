@@ -13,6 +13,7 @@
 ## 🚀 Live Demo
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smart-ecom-analytics-zonixt017.streamlit.app)
+Link: https://smart-ecom-analytics-zonixt017.streamlit.app/
 
 ---
 
