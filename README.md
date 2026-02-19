@@ -111,20 +111,6 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## ☁️ Deployment
-
-### Deploy to Streamlit Cloud (free)
-
-1. Go to **[share.streamlit.io](https://share.streamlit.io)**
-2. Click **"New app"**
-3. Connect your GitHub repo: `zonixt017/Smart-Ecom-Analytics`
-4. Set **Main file path**: `app/streamlit_app.py`
-5. Click **Deploy** — done! 🎉
-
-> ⚠️ **Note on TensorFlow**: Streamlit Cloud has a 1GB memory limit. If the Sales Forecast page causes memory issues, the LSTM page gracefully falls back to a pre-computed forecast. Consider using `tensorflow-cpu` in requirements for cloud deployment.
-
----
-
 ## 🧠 Modules
 
 ### 📊 Week 1 — EDA Overview
