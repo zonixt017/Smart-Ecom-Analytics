@@ -12,9 +12,7 @@
 
 ## 🚀 Live Demo
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smart-ecom-analytics.streamlit.app)
-
-> **Deploy your own** → see [Deployment](#-deployment) section below
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smart-ecom-analytics-zonixt017.streamlit.app)
 
 ---
 
