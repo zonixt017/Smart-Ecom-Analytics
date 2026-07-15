@@ -97,6 +97,7 @@ git clone https://github.com/zonixt017/Smart-Ecom-Analytics.git
 cd Smart-Ecom-Analytics
 
 # 2. Install dependencies
+(use .env before installing)
 pip install -r requirements.txt
 
 # 3. (Optional) Re-run preprocessing from raw Kaggle data
